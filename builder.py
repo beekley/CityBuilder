@@ -7,32 +7,56 @@ Width = 10
 Height = 10
 
 CitList = []
-Grid = [] 
+Grid = []
+
+# empty plot
+
 
 class Citizen():
   def __init__(self):
 		self.wealth = round(abs(random.gauss(WealthAvg, WealthDist)))
 
 class Plot():
-	def __init__(self, x, y):
-		self.occupant = None
-		self.xcoor = x
-		self.ycoor = y
+	def __init__(self, xcoor, ycoor):
+		self.occupant = Citizen()
+		self.occupant.wealth = 0
+		self.occupied = False
+		self.x = xcoor
+		self.y = ycoor
 		self.value = 0
+		self.evaluate()
 		
 	def evaluate(self):
-		totalvalue = Grid[self.y+1][self.x].occupant.wealth
-		totalvalue += Grid[self.y][self.x+1].occupant.wealth
-		totalvalue += Grid[self.y-1][self.x].occupant.wealth
-		totalvalue += Grid[self.y][self.x-1].occupant.wealth
-		self.value = totalvalue / 4
+		sidecount = 0
+		totalvalue = 0
+		
+		try:
+			totalvalue = Grid[self.y+1][self.x].occupant.wealth
+		except IndexError:
+			sidecount += 1
+		try:
+			totalvalue += Grid[self.y][self.x+1].occupant.wealth
+		except IndexError:
+			sidecount += 1
+		try:
+			totalvalue += Grid[self.y-1][self.x].occupant.wealth
+		except IndexError:
+			sidecount += 1
+		try:
+			totalvalue += Grid[self.y][self.x-1].occupant.wealth
+		except IndexError:
+			sidecount += 1
+		
+		if sidecount < 4:
+			self.value = totalvalue / (4-sidecount)
 		
 def BuildGrid():
 	for i in range(Height):
 		Grid.append([])
 		for j in range(Width):
 			NewPlot = Plot(j,i)
-			Grid[i].append(NewPlot)
+			if not Grid[i][j]:
+				Grid[i].append(NewPlot)
 
 def AddCitizens():
 	for i in range(Population):
