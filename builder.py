@@ -50,16 +50,27 @@ class Plot():
 		if sidecount < 4:
 			self.value = totalvalue / (4-sidecount)
 		
-def BuildGrid():
-	for i in range(Height):
-		Grid.append([])
-		for j in range(Width):
-			NewPlot = Plot(j,i)
-			if not Grid[i][j]:
-				Grid[i].append(NewPlot)
-
 def AddCitizens():
 	for i in range(Population):
 		NewCitizen = Citizen()
 		CitList.append(NewCitizen)
 		
+def BuildGrid():
+	for i in range(Height):
+		Grid.append([])
+		for j in range(Width):
+			NewPlot = Plot(j,i)
+			Grid[i].append(NewPlot)
+
+def RefreshValues():
+	for i in range(Height):
+		for j in range(Width):
+			Grid[i][j].evaluate()
+			
+def PrintGrid():
+	for i in range(Width):
+		Line = '|'
+		for j in range(Width):
+			Line = Line + str(Grid[i][j].occupant.wealth) + '|'
+		print(str(Width-i) + Line)
+	print('\n')
