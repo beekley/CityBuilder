@@ -129,12 +129,13 @@ def CitPop(Cit, max):
 			PopPlot = Probvals[k][1]
 			break
 			
-	# gotta put the remaining code here
+	Grid[PopPlot[0]][PopPlot[1]].populate(Cit)
 	
 def ListPop(List):
 	ProbMax = SetProbs()
-	for k in List:
-		CitPop(List[k], ProbMax)
+	for i in len(List):
+		CitPop(List[i], ProbMax)
 	
 BuildGrid()
-Guy = Citizen()
+AddCitizens()
+ListPop(CitList)
