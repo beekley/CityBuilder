@@ -2,7 +2,7 @@ import random
 
 WealthAvg = 1000
 WealthDist = 500
-Population = 10
+Population = 30
 Width = 10
 Height = 10
 BaseValue = 100
@@ -123,17 +123,22 @@ def SetProbs():
 	return ProbCount
 
 def CitPop(Cit, max):
-	DiceRoll = uniform(0,max)
-	for k in ProbVals:
-		if Diceroll <= Probvals[k][0]:
-			PopPlot = Probvals[k][1]
-			break
+	
+	while True:
+		DiceRoll = random.uniform(0,max)
+		for k in range(len(ProbVals)):
+			if DiceRoll <= ProbVals[k][0]:
+				PopPlot = ProbVals[k][1]
+				break
+				
 			
-	Grid[PopPlot[0]][PopPlot[1]].populate(Cit)
+		if Grid[PopPlot[0]][PopPlot[1]].occupied == False:
+			Grid[PopPlot[0]][PopPlot[1]].populate(Cit)
+			return 0
 	
 def ListPop(List):
 	ProbMax = SetProbs()
-	for i in len(List):
+	for i in range(len(List)):
 		CitPop(List[i], ProbMax)
 	
 BuildGrid()
