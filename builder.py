@@ -1,10 +1,10 @@
 import random
 
-WealthAvg = 1000
-WealthDist = 500
-Population = 30
+WealthAvg = 3000
+WealthDist = 1000
+Population = 10
 Width = 10
-Height = 10
+Height = 30
 BaseValue = 100
 
 CitList = []
@@ -15,9 +15,11 @@ ProbVals = []
 
 
 class Citizen():
-  def __init__(self):
+	def __init__(self):
 		self.wealth = round(abs(random.gauss(WealthAvg, WealthDist)))
-
+		self.x = None
+		self.y = None
+		
 class Plot():
 	def __init__(self, xcoor, ycoor):
 		self.occupant = Citizen()
@@ -106,7 +108,16 @@ def RefreshValues():
 		for j in range(Width):
 			Grid[i][j].evaluate()
 			
-def PrintGrid():
+
+def PrintWealths():
+	for i in range(Height):
+		Line = '|'
+		for j in range(Width):
+			Line = Line + str(int(Grid[i][j].occupant.wealth)).zfill(4) + '|'
+		print(str(i).zfill(2) + Line)
+	print('\n')
+
+def PrintValues():
 	for i in range(Height):
 		Line = '|'
 		for j in range(Width):
@@ -134,12 +145,14 @@ def CitPop(Cit, max):
 			
 		if Grid[PopPlot[0]][PopPlot[1]].occupied == False:
 			Grid[PopPlot[0]][PopPlot[1]].populate(Cit)
-			return 0
+			return PopPlot
 	
 def ListPop(List):
 	ProbMax = SetProbs()
 	for i in range(len(List)):
-		CitPop(List[i], ProbMax)
+		Location = CitPop(List[i], ProbMax)
+		List[i].x =	Location[1]
+		List[i].y = Location[0]
 	
 BuildGrid()
 AddCitizens()
