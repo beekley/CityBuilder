@@ -2,9 +2,9 @@ import random
 
 WealthAvg = 3000
 WealthDist = 1000
-Population = 10
+Population = 200
 Width = 10
-Height = 30
+Height = 100
 BaseValue = 100
 
 CitList = []
@@ -32,17 +32,21 @@ class Plot():
 		
 	def populate(self, populant):
 		self.occupant = populant
+		self.occupant.x = self.x
+		self.occupant.y = self.y
 		self.occupied = True
 		self.evaluate()
 		if self.value > 50:
 			self.UpdateAdjacent()
 	
-	def depopulate(self):
+	def depopulate(self, update=0):
+		self.occupant.x = None
+		self.occupant.y = None
 		self.occupant = Citizen()
 		self.occupant.wealth = 0
 		self.occupied = False
 		self.evaluate()
-		if self.value > 50:
+		if self.value > 50 and update > 0:
 			self.UpdateAdjacent()
 	
 	def evaluate(self):
@@ -150,6 +154,9 @@ def CitPop(Cit, max):
 def ListPop(List):
 	ProbMax = SetProbs()
 	for i in range(len(List)):
+		if List[i].y != None or List[i].x != None:
+			Grid[List[i].y][List[i].x].depopulate()
+			
 		Location = CitPop(List[i], ProbMax)
 		List[i].x =	Location[1]
 		List[i].y = Location[0]
