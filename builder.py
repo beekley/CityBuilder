@@ -1,25 +1,26 @@
 import random
 
-WealthAvg = 3000
-WealthDist = 1000
-Population = 200
-Width = 10
-Height = 100
+# City Parameters
+WealthAvg = 10000
+WealthDist = 5000
+Population = 50
+Width = 3
+Height = 50
 BaseValue = 100
 
+# Initialize Arrays
 CitList = []
 Grid = []
 ProbVals = []
 
-# empty plot
-
-
+# Citizen class that has a random wealth around an average
 class Citizen():
 	def __init__(self):
 		self.wealth = round(abs(random.gauss(WealthAvg, WealthDist)))
 		self.x = None
 		self.y = None
-		
+
+# Plot class that has initial "citizen" with no value		
 class Plot():
 	def __init__(self, xcoor, ycoor):
 		self.occupant = Citizen()
@@ -29,7 +30,8 @@ class Plot():
 		self.y = ycoor
 		self.value = 0
 		self.evaluate()
-		
+	
+	# Bookkeeping for adding a citizen	
 	def populate(self, populant):
 		self.occupant = populant
 		self.occupant.x = self.x
@@ -39,6 +41,7 @@ class Plot():
 		if self.value > 50:
 			self.UpdateAdjacent()
 	
+	# Booking for removing a citizen
 	def depopulate(self, update=0):
 		self.occupant.x = None
 		self.occupant.y = None
@@ -49,6 +52,7 @@ class Plot():
 		if self.value > 50 and update > 0:
 			self.UpdateAdjacent()
 	
+	# Calculates value based on wealth of surrounding plots
 	def evaluate(self):
 		sidecount = 0
 		totalvalue = 0
@@ -146,7 +150,6 @@ def CitPop(Cit, max):
 				PopPlot = ProbVals[k][1]
 				break
 				
-			
 		if Grid[PopPlot[0]][PopPlot[1]].occupied == False:
 			Grid[PopPlot[0]][PopPlot[1]].populate(Cit)
 			return PopPlot
