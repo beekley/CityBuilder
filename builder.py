@@ -3,10 +3,10 @@ import random
 # City Parameters
 WealthAvg = 10000
 WealthDist = 5000
-Population = 50
+Population = 10
 Width = 3
 Height = 50
-BaseValue = 100
+BaseValue = 1
 
 # Initialize Arrays
 CitList = []
@@ -99,10 +99,10 @@ class Plot():
 		except IndexError:
 			pass
 		
-def AddCitizens():
+def AddCitizens(cList):
 	for i in range(Population):
 		NewCitizen = Citizen()
-		CitList.append(NewCitizen)
+		cList.append(NewCitizen)
 		
 def BuildGrid():
 	for i in range(Height):
@@ -141,8 +141,9 @@ def SetProbs():
 			ProbVals.append([ProbCount, [i,j] ])
 	return ProbCount
 
+# Takes a citizens and a probability maximum,
+# returns a chosen location for citizen to populate
 def CitPop(Cit, max):
-	
 	while True:
 		DiceRoll = random.uniform(0,max)
 		for k in range(len(ProbVals)):
@@ -153,9 +154,11 @@ def CitPop(Cit, max):
 		if Grid[PopPlot[0]][PopPlot[1]].occupied == False:
 			Grid[PopPlot[0]][PopPlot[1]].populate(Cit)
 			return PopPlot
-	
+
+# Takes a list of citizens, removes them from past location and repopulates	
 def ListPop(List):
 	ProbMax = SetProbs()
+	print(ProbMax)
 	for i in range(len(List)):
 		if List[i].y != None or List[i].x != None:
 			Grid[List[i].y][List[i].x].depopulate()
@@ -165,5 +168,5 @@ def ListPop(List):
 		List[i].y = Location[0]
 	
 BuildGrid()
-AddCitizens()
+AddCitizens(CitList)
 ListPop(CitList)
